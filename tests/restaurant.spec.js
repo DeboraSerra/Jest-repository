@@ -46,7 +46,15 @@ const createMenu = require('../src/restaurant');
 
 describe('10 - Implemente os casos de teste e a função `createMenu`', () => {
   it('Verifica se a função `createMenu` tem o comportamento esperado', () => {
-    fail('Teste vazio!');
+    const objetoRetornado = createMenu({food: {'coxinha': 3.9, 'sopa': 9.9}, drink: {'agua': 3.9, 'cerveja': 6.9}})
+    expect(typeof objetoRetornado.fetchMenu).toBe('function');
+    expect(Object.keys(objetoRetornado.fetchMenu())).toEqual(['food', 'drink']);
+    expect(objetoRetornado.fetchMenu()).toEqual({food: {'coxinha': 3.9, 'sopa': 9.9}, drink: {'agua': 3.9, 'cerveja': 6.9}});
+    expect(objetoRetornado.consumption).toEqual([]);
+    if (objetoRetornado.order('coxinha')) expect(objetoRetornado.consumption).toEqual(['coxinha']);
+    if(objetoRetornado.order('sopa') && objetoRetornado.order('agua')) expect(objetoRetornado.consumption).toEqual(['coxinha', 'sopa', 'agua']);
+    if(objetoRetornado.order('sopa')) expect(objetoRetornado.consumption).toEqual(['coxinha', 'sopa', 'agua', 'sopa']);
+    expect(objetoRetornado.pay()).toBeCloseTo(30.36);
     // TESTE 1: Verifique se o retorno da função createMenu() é um objeto que possui a
     // chave fetchMenu, a qual tem como valor uma função.
     // ```
